@@ -1,0 +1,113 @@
+* {
+	margin: 0;
+	padding: 0;
+	font-family: sans-serif;
+	font-size: 16px;
+}
+
+.header {
+    background-color: #6592a6;
+    color: #fff;
+    text-shadow: 0 1px 0 #333;
+    border-top: 1px solid;
+    border-bottom: 1px solid;
+    border-color: #618da1;
+}
+
+.header h1 {
+    font-size: 1em;
+    text-align: center;
+    margin: 0 30%;
+    padding: .7em 0;
+}
+
+.header {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.search {
+    border-bottom: 1px solid #b3b3b3;
+    overflow: hidden;
+    background-image: -moz-linear-gradient(top,#f0f0f0,#e9eaeb);
+    background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0,#f0f0f0),color-stop(1,#e9eaeb));
+}
+
+.search-input {
+    margin: 5px;
+    width: auto;
+    display: block;
+    padding: 0 30px;
+    background-position: 8px 50%;
+    background-repeat: no-repeat;
+    position: relative;
+    box-shadow: inset 0 1px 4px rgba(0, 0, 0, .2);
+    background-color: #fff;
+    background-image: url(img/icon-search.png);
+    background-size: 16px 16px;
+    border: 1px solid #b3b3b3;
+    color: #333;
+    text-shadow: 0 1px 0 #fff;
+    font-weight: bold;
+    border-radius: 1em;
+}
+
+.input-text {
+    width: 60%;
+    display: inline-block;
+    border: 0;
+    padding: .4em 0;
+    background: transparent none;
+    font-weight: bold;
+}
+
+li.template {
+    display: none;
+}
+
+li.row {
+	display: block;
+	position: relative;
+	overflow: hidden;
+	text-align: left;
+	border-top: 1px solid #ccc;
+	text-shadow: 0 1px 1px #f6f6f6;
+	background-image: -moz-linear-gradient(top,#fefefe,#eee);
+	background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0,#fdfdfd),color-stop(1,#eee));
+	list-style: none;
+	color: #444;
+	font-weight: bold;
+}
+
+li.row .inner {
+	display: block;
+	position: relative;
+	padding: .7em 15px .7em 75px;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+}
+
+li.row a {
+	text-decoration: none;
+	color: #2f3e46;
+}
+
+li.row img {
+	position: absolute;
+	top: 0;
+	left: 1px;
+	max-height: 40px;
+	max-width: 60px;
+}
+
+li.row.selected {
+	background-color: #38c;
+	background-image: none;
+	text-shadow: none;
+	color: #fff;
+}
+
+li.row.selected a {
+	color: #fff;
+}

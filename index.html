@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>DPLA Display Search</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	
+	<link rel="stylesheet" type="text/css" href="base.css" />
+	
+	<script src="jquery-1.11.0.min.js"></script>
+	<script src="config.js"></script>
+	<script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+	<div class="header">
+	    <h1>DPLA Image Remote</h1>
+	</div>
+	<div class="content">
+	    <form class="search" onsubmit="return search();">
+	        <div class="search-input">
+	            <input id="search-text" class="input-text" placeholder="Enter search term..." />
+	        </div>
+	    </form>
+	    <ul class="results">
+	        <li class="template">
+	        	<div class="inner">
+					<img src="" alt="" />
+					<a href="javascript:;;"></a>
+				</div>
+	        </li>
+	    </ul>
+	</div>
+	<script type="text/javascript">
+		var socket = io.connect('http://' + HOST_ADDRESS + ':' + HOST_PORT);
+	    function search() {
+	        var q = $('#search-text').val();
+	        $('ul.results li.row').remove();
+	        
+	        $.ajax({
+	            url: 'http://api.dp.la/v2/items?q=' + q + '&hasView.format=image*&page_size=25&api_key=' + API_KEY,
+	            dataType: 'jsonp',
+	            success: function(data) {
+                    if (data['count'] > 0) {
+                        for (key in data['docs']) {
+                            var item = data['docs'][key];
+                            
+                            var li = $('ul.results li.template').clone();
+                            li.removeClass('template').addClass('row');
+                            
+                            li.data('image-url', item['originalRecord']['objects']['object']['file-url']);
+                            li.data('id', item['id']);
+                            $('a', li).text(item['sourceResource']['title']);
+                            $('img', li).attr('src', item['originalRecord']['objects']['object']['thumbnail-url']);
+                            li.click(function() {
+                            	if ($(this).hasClass('selected')) {
+                            		$(this).removeClass('selected');
+                            		socket.emit('remove' , {
+                            			id: $(this).data('id')
+                            		});
+                            	}
+                            	else {
+                            		$(this).addClass('selected');
+                            		socket.emit('add' , {
+                            			id: $(this).data('id'),
+                            			url: $(this).data('image-url')
+                            		});
+                            	}
+                            });
+                            
+                            $('ul.results').append(li);
+                        }
+                    }
+                }	            
+	        });
+	        return false;
+	    }
+	</script>
+</body>
+</html>

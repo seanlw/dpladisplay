@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>DPLA Display Search</title>
+	
+	<link rel="stylesheet" type="text/css" href="display.css" />
+	
+	<script src="jquery-1.11.0.min.js"></script>
+	<script src="config.js"></script>
+	<script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+	<div id="wrapper">
+		<div class="template">
+			<img src="" />
+		</div>
+	</div>
+	<script type="text/javascript" >
+		var socket = io.connect('http://' + HOST_ADDRESS + ':' + HOST_PORT);
+		socket.on('add', function(data) {
+			addImage(data['id'], data['url']);
+		});
+
+		socket.on('remove', function(data) {
+			$('div[data-id="' + data['id'] + '"]').remove();
+		});
+
+		function addImage(id, url) {
+			var t = imageType();
+			
+			/* mark old images for removal if there is to much */
+			if ($('.image').length >= 15) {
+				markOldestImageForRemoval();
+			}
+			
+			img = $('.template').clone();
+			img.removeClass().addClass('image ' + t.type);
+	
+			img.attr('data-id', id);
+			img.data('speed', t.speed);
+			$('img', img).attr('src', url);
+	
+			img.css('top', $(window).height() + 15);
+			img.prependTo('#wrapper');
+			
+			/* start the animation once the image is loaded */
+			$('img', img).one('load complete', function() {
+				animateImage(img);
+			});
+		}
+
+		function animateImage(img) {
+			var speed = img.data('speed');
+			
+			img.css('top', $(window).height() + 15);
+			img.css('left', randomize(15, $(window).width() - (img.width() - 30)));
+			
+			img.animate({
+				top: ((img.height() * -1) - 15)
+			}, speed, 'linear', function() {
+				/* at the end of animation. if marked for removal, remove it from dom */
+				if (img.hasClass('remove')) {
+					img.remove();
+				}
+				else {
+					/* go back around, but at a different size/pace */
+					var t = imageType();
+					img.removeClass().addClass('image ' + t.type);
+					img.data('speed', t.speed);
+					animateImage(img);
+				}
+			});
+		}
+
+		function imageType() {
+			var type = ['small', 'medium', 'large'];
+			var speed = [35000 , 25000, 20000];
+			var i = randomize(0, 2);
+	
+			return { type: type[i], speed: speed[i] }
+		}
+
+		function markOldestImageForRemoval() {
+			/* some images donn't load and start the animation so we mark them for removal.
+			   if they are already marked, remove it 
+			*/
+			$('.image.remove[style="top: ' + ($(window).height() + 15) + 'px;"]').remove();
+			
+			/* mark the last div (oldest) for removal */
+			$('.image:not(.remove):last').addClass('remove');
+		}
+
+		function randomize(min, max) {
+			return Math.floor(Math.random() * (max - min + 1)) + min;
+		}
+	</script>
+</body>
+</html>
