@@ -21,10 +21,10 @@ You can use localhost, however, mobile devices may not be able to connect to the
 
     node app.js
 
-4. Now open a browser and go to http://<ip address or hostname>:8080/display.html
+4. Now open a browser and go to http://&lt;ip address or hostname&gt;:8080/display.html
 Don't worry if all you see is black, that's a good thing :). This will be your image display.
 If you chose a different port number in config.js use that number instead of 8080.
-5. Open up a new browser window or point your mobile browser to http://<ip address or hostname> and
+5. Open up a new browser window or point your mobile browser to http://&lt;ip address or hostname&gt;:8080/ and
 make a search. Select images and watch the display.
 
 Note
